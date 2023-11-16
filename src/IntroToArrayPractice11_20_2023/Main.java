@@ -60,12 +60,12 @@ public class Main {
         return arr1;
     }
 
-    public static int[] compareSums(int[] a, int[] b){
+    public static int[] compareSums(int[] a, int[] b){ //11
         int sum1 = 0;
         int sum2 = 0;
         for(int x: a){
             sum1+=x;
-        }   
+        }
         for(int x: b){
             sum2+=x;
         }
@@ -75,6 +75,18 @@ public class Main {
             return b;
         }
         return a;
+    }
+
+    public static double[] addRespective(double[] a, double[] b){ //12
+        return new double[]{a[0]+b[0], a[1]+b[1]};
+    }
+
+    public static int[] firstIndexes(int[] a, int[] b){
+        double[] arr = new double[2];
+        if(a.length!=0){
+
+        }
+        return null;
     }
     public static void main(String[] args) {
         System.out.println((Arrays.toString(getMiddles(new double[]{0, 1, 2}, new double[]{1, 5, 7, 9, 11, 13, 15}))));
