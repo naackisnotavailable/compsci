@@ -9,18 +9,21 @@ public class Cipher {
 
         Scanner scanner = new Scanner(System.in);
         System.out.println("Pick a cipher: ");
-        String in = scanner.nextLine();
+        String in = scanner.nextLine().toLowerCase();
         if(in.equals("polybius")) {
             System.out.println("Are you encrypting or decrypting?");
             in = scanner.nextLine();
             encrypt= in.equals("encrypting");
             System.out.println("Enter a message: ");
-            encryptString=scanner.nextLine();
+            encryptString=scanner.nextLine().toUpperCase();
 
             System.out.println("Enter key: ");
-            String key = scanner.nextLine();
+            String key = scanner.nextLine().toUpperCase();
 
-            String out = Viginere.vigenereCipher(encryptString, key, encrypt);
+            char[] grid = new char[36];
+            Polybius.fillGrid(grid, Utility.ALNUM);
+
+            String out = Polybius.polybiusSquare(grid, key, encryptString, encrypt);
             System.out.println(out);
 
         }
@@ -51,7 +54,6 @@ public class Cipher {
             System.out.println(out);
 
         }
-        int key = 10;
 
     }
 }

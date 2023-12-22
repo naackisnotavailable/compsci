@@ -1,65 +1,91 @@
 package Ciphers;
 
+import java.util.Arrays;
+
 public class Polybius {
-    static char[] grid = new char[36];
 
-    public static void fillGrid(char[] grid, String content){
-        char[] cArr = content.toCharArray();
-        System.arraycopy(cArr, 0, grid, 0, cArr.length);
-    }
-
-    public static String mixKey(char[] grid, String key){
-        StringBuilder sb = new StringBuilder();
-        for(char c: grid) {
-            sb.append(c);
+    public static void fillGrid(char[] grid, String content) {
+        for (int i = 0; i < grid.length; i++) {
+            grid[i] = content.charAt(i);
         }
-        String gridString = sb.toString();
-
-        key=key.concat(gridString);
-        key=Utility.removeDuplicate(key);
-        return key;
-
     }
 
-    public static int findInGrid(char[] grid, char c){
-        int column =0;
+    public static String mixKey(String key) {
+        StringBuilder mixedKey = new StringBuilder(key);
+
+        for (char c = 'A'; c <= 'Z'; c++) {
+            if (key.indexOf(c) == -1) {
+                mixedKey.append(c);
+            }
+        }
+
+        for (char c = '0'; c <= '9'; c++) {
+            if (key.indexOf(c) == -1) {
+                mixedKey.append(c);
+            }
+        }
+
+        return mixedKey.toString();
+    }
+
+    public static String findInGrid(char[] grid, char c) {
+        int column = 0;
         int row = 0;
 
-        for(int i=0; i<grid.length; i++){
-            if(grid[i]==c){
-                column = i%6 +1;
-                row = i/6 +1;
+        for (int i = 0; i < grid.length; i++) {
+            if (grid[i] == c) {
+                column = i % 6;
+                row = i / 6;
             }
         }
-        return row*10 + column;
+        return String.format("%d%d", row, column);
     }
 
-    public static int findNumInGrid(char[] grid, char c){
+    public static char findInGridNum(char[] grid, String rowColumn) {
+        char[] cArr = rowColumn.toCharArray();
+        int row = (int) cArr[0] - 48;
+        int column = (int) cArr[1] - 48;
+        int pos = row * 6 + column;
+        return grid[pos];
+    }
 
-        for(int i=0; i<grid.length; i++){
-            if(grid[i]==c){
-                return i;
-            }
-            }
-        return -1;
-        }
 
-    public static String polybiusSquare(char[] grid, String key, String original, boolean encrypt){
+
+    public static String polybiusSquare(char[] grid, String key, String original, boolean encrypt) {
         StringBuilder result = new StringBuilder();
-        String mixedGrid = mixKey(grid, key);
-        char[] oArr = original.toCharArray();
-        int[] oIArr = new int[36];
-        for(int i=0; i<oArr.length; i++){
-            oIArr[i] = findInGrid(grid, oArr[i]);
-        }
-        if(encrypt){
-            for(int x: oIArr){
-                result.append(grid[x]);
+        char[] cArr = original.toCharArray();
+        String[] positions = new String[cArr.length];
+        char[] positions2 = new char[cArr.length];
+        char[] chars = new char[cArr.length];
+        char[] mixedGrid = Arrays.copyOf(grid, grid.length);
+        String mixedKey = mixKey(key);
+        fillGrid(mixedGrid, mixedKey);
+        if (encrypt) {
+            for (int i = 0; i < cArr.length; i++) {
+                positions[i] = findInGrid(grid, cArr[i]);
             }
+
+            for (int i = 0; i < positions.length; i++) {
+                chars[i] = findInGridNum(mixedGrid, positions[i]);
+            }
+            for (char c : chars) {
+                result.append(c);
+            }
+        } else {
+            for (int i = 0; i < cArr.length; i++) {
+                positions[i] = findInGrid(mixedGrid, cArr[i]);
+            }
+
+            for (int i = 0; i < positions.length; i++) {
+                chars[i] = findInGridNum(grid, positions[i]);
+            }
+            for (char c : chars) {
+                result.append(c);
+            }
+
+
         }
         return result.toString();
-    }
-    public static void printGrid(){
-        Utility.printGrid(grid);
+
     }
 }

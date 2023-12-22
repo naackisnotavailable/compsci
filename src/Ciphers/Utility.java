@@ -3,6 +3,17 @@ package Ciphers;
 public class Utility {
         public final static String ALNUM = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 
+    public static int indexOf(char[] c, char n){
+        int count = 0;
+        for(char i: c){
+            if(i == n){
+                return count;
+            }
+            count +=1;
+        }
+        return -1;
+    }
+
         public static String toUpper(String original) {
             StringBuilder sb = new StringBuilder();
             for(char c: original.toCharArray()) {
