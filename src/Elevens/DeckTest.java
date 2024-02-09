@@ -35,8 +35,8 @@ public class DeckTest {
         System.out.println("Deck 3: " + deck3.toString());
         System.out.println("Deck 3 dealt card: " + deck3.deal());
         System.out.println("Deck 3 dealt card: " + deck3.deal());
-
-
     }
+
+    
     
 }

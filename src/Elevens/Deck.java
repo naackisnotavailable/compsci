@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class Deck {
     int size;
-    private ArrayList<Card> cards;
+    public ArrayList<Card> cards;
     public Deck(String[] ranks, String[] suits, int[] pointValues) {
         this.cards = new ArrayList<Card>();
         for (int i = 0; i < ranks.length; i++) {
@@ -13,6 +13,7 @@ public class Deck {
             }
         }
         size = size();
+        cards = Shuffle.selectionShuffle(this);
     }
 
     
