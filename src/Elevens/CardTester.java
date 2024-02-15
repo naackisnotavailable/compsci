@@ -1,21 +1,22 @@
 package Elevens;
-
+/**
+ * This is a class that tests the Card class.
+ */
 public class CardTester {
-    static Card card1 = new Card("King", "Hearts", 13);
-    static Card card2 = new Card("King", "Hearts", 13);
-    static Card card3 = new Card("Queen", "Hearts", 12);
 
-    public static void testCard(Card card){
-        System.out.println(card.getRank());
-        System.out.println(card.getSuit());
-        System.out.println(card.getPointValue());
-        System.out.println(card.matches(card2));
-        System.out.println(card.toString());
-    }
-
+    /**
+     * The main method in this class checks the Card operations for consistency.
+     *	@param args is not used.
+     */
     public static void main(String[] args) {
-        testCard(card1);
-        testCard(card2);
-        testCard(card3);
+        Card card1 = new Card("King", "Hearts", 13);
+        Card card2 = new Card("King", "Hearts", 13);
+        Card card3 = new Card("Queen", "Hearts", 12);
+        System.out.println(card1.suit());
+        System.out.println(card1.rank());
+        System.out.println(card1.pointValue());
+        System.out.println(card1.matches(card2));
+        System.out.println(card1.matches(card3));
+        System.out.println(card1.toString());   
     }
 }
