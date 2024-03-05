@@ -2,6 +2,9 @@ package array_traversal_2d;
 import java.util.Arrays;
 
 
+/**
+ * This class contains test methods for the Main class.
+ */
 class MainTest {
     void testAlternating10() {
         int[][] expected = new int[100][100];

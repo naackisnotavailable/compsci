@@ -1,5 +1,8 @@
 package array_practice_2d;
 
+/**
+ * The ArrayOpsTest class is used to test the methods of the ArrayOps class.
+ */
 public class ArrayOpsTest {
     public static void main(String[] args) {
         testCreate3DArray();

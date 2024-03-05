@@ -2,6 +2,9 @@ package Ciphers;
 
 import jdk.jshell.execution.Util;
 
+/**
+ * The Test class is used to test the functionality of various cipher algorithms.
+ */
 public class Test {
     public static void main(String[] args) {
 

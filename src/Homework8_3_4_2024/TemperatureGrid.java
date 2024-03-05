@@ -2,6 +2,13 @@ package Homework8_3_4_2024;
 
 public class TemperatureGrid {
     private double[][] temps;
+    /**
+     * Computes the average temperature of the neighboring cells around the specified row and column.
+     * 
+     * @param row the row index of the cell
+     * @param col the column index of the cell
+     * @return the average temperature of the neighboring cells
+     */
     private double computeTemp(int row, int col){
         double sum = 0;
         int count = 0;
@@ -16,6 +23,12 @@ public class TemperatureGrid {
         return sum / count;
     }
 
+    /**
+     * Updates all temperatures in the grid based on the computed temperature values.
+     * 
+     * @param tolerance the maximum difference allowed between the new and old temperature values
+     * @return true if any temperature value has changed, false otherwise
+     */
     public boolean updateAllTemps(double tolerance){
         double[][] newTemps = new double[temps.length][temps[0].length];
         boolean changed = false;
