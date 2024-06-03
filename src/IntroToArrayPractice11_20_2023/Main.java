@@ -1,17 +1,15 @@
 package IntroToArrayPractice11_20_2023;
 
-import org.jetbrains.annotations.NotNull;
-
 import java.util.Arrays;
 
 public class Main {
     int[] pi = new int[]{3, 1, 4};  //1
 
-    public double multiply(double @NotNull [] nums){ //2
+    public double multiply(double[] nums){ //2
         return nums[0]*nums[1];
     }
 
-    public double sum(double @NotNull [] nums){ //3
+    public double sum(double[] nums){ //3
         double sum = 0;
         for(double x: nums){
             sum+=x;
@@ -19,19 +17,19 @@ public class Main {
         return sum;
     }
 
-    public boolean checkFirst(double @NotNull [] arr1, double @NotNull [] arr2){ //4
+    public boolean checkFirst(double[] arr1, double[] arr2){ //4
         return arr1[0] == arr2[0];
     }
 
-    public double[] firstLast(double @NotNull [] arr){ //5
+    public double[] firstLast(double[] arr){ //5
         return new double[]{arr[0], arr[1]};
     }
 
-    public double[] combineMiddle(double @NotNull [] arr1, double @NotNull [] arr2){ //6
+    public double[] combineMiddle(double[] arr1, double[] arr2){ //6
         return new double[]{arr1[1], arr2[1]};
     }
 
-    public static double[] getMiddles(double @NotNull [] arr1, double @NotNull [] arr2){ //7
+    public static double[] getMiddles(double[] arr1, double[] arr2){ //7
         int middle1 = (int) Math.floor(arr1.length/2);
         int middle2 = (int) Math.floor(arr2.length/2);
         return new double[]{arr1[middle1], arr2[middle2]};
@@ -81,12 +79,14 @@ public class Main {
         return new double[]{a[0]+b[0], a[1]+b[1]};
     }
 
-    public static int[] firstIndexes(int[] a, int[] b){
-        double[] arr = new double[2];
-        if(a.length!=0){
-
+    public static int[] firstIndexes(int[] c, int[] b){
+        if(c.length==0){
+            return new int[]{b[0]};
         }
-        return null;
+        if(b.length==0){
+            return new int[]{c[0]};
+        }
+        return new int[]{c[0], b[0]};
     }
     public static void main(String[] args) {
         System.out.println((Arrays.toString(getMiddles(new double[]{0, 1, 2}, new double[]{1, 5, 7, 9, 11, 13, 15}))));
