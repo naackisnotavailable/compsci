@@ -1,16 +1,19 @@
-import okhttp3.*;
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.IOException;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
+import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
+import okhttp3.*;
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartPanel;
+import org.jfree.chart.JFreeChart;
+import org.jfree.chart.plot.XYPlot;
+import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
+import org.jfree.data.time.Day;
+import org.jfree.data.time.TimeSeries;
+import org.jfree.data.time.TimeSeriesCollection;
+
+import javax.swing.*;
+import java.awt.*;
+import java.io.IOException;
 
 public class Main {
     public static void main(String[] args) {
@@ -65,7 +68,7 @@ public class Main {
         }
     }
 
-    public static List<Bar> fetchBars(String ticker) {
+    public static String graph(String ticker) {
         String apiKey = "PKS0C2F5BMN4B3DN8GZ4";
         String apiSecret = "N8hK8QlmvmEFdg6CasRJkshtm98ZFyZn8QYzf9fg";
 
@@ -73,6 +76,7 @@ public class Main {
         String timeframe = "1Day";
 
         String url = "https://data.alpaca.markets/v2/stocks/" + ticker + "/bars?timeframe=" + timeframe + "&limit=252";
+        System.out.println("Request URL: " + url);  // Log the URL
 
         Request request = new Request.Builder()
                 .url(url)
@@ -85,7 +89,8 @@ public class Main {
             Response response = client.newCall(request).execute();
             if (response.code() == 200) {
                 String responseData = response.body().string();
-                return parseBars(responseData);
+                System.out.println("Response Data: " + responseData);  // Log the response
+                return responseData;
             } else {
                 System.out.println("Error: " + response.code() + " " + response.message());
                 System.out.println("Response: " + response.body().string());
@@ -94,21 +99,6 @@ public class Main {
             e.printStackTrace();
         }
         return null;
-    }
-
-    public static List<Bar> parseBars(String jsonData) {
-        List<Bar> bars = new ArrayList<>();
-        JsonObject jsonObject = JsonParser.parseString(jsonData).getAsJsonObject();
-        JsonArray barArray = jsonObject.getAsJsonArray("bars");
-
-        for (int i = 0; i < barArray.size(); i++) {
-            JsonObject barObject = barArray.get(i).getAsJsonObject();
-            double close = barObject.get("c").getAsDouble();
-            String dateStr = barObject.get("t").getAsString().split("T")[0];
-            LocalDate date = LocalDate.parse(dateStr, DateTimeFormatter.ISO_DATE);
-            bars.add(new Bar(date, close));
-        }
-        return bars;
     }
 
     public static void buildGUI() {
@@ -141,14 +131,47 @@ public class Main {
 
         graphButton.addActionListener(e -> {
             String ticker = tickerTextField.getText();
-            List<Bar> bars = fetchBars(ticker);
+            String graphData = graph(ticker);
 
-            if (bars != null) {
-                GraphPanel graphPanel = new GraphPanel(bars);
+            if (graphData != null) {
+                // Parse JSON response
+                Gson gson = new Gson();
+                JsonObject jsonObject = gson.fromJson(graphData, JsonObject.class);
+                JsonArray bars = jsonObject.getAsJsonArray("bars");
+
+                // Create a time series chart
+                TimeSeries series = new TimeSeries(ticker);
+                for (int i = 0; i < bars.size(); i++) {
+                    JsonObject bar = bars.get(i).getAsJsonObject();
+                    double close = bar.get("c").getAsDouble();
+                    String dateStr = bar.get("t").getAsString().split("T")[0];
+                    String[] dateParts = dateStr.split("-");
+                    int year = Integer.parseInt(dateParts[0]);
+                    int month = Integer.parseInt(dateParts[1]);
+                    int day = Integer.parseInt(dateParts[2]);
+                    series.add(new Day(day, month, year), close);
+                }
+
+                TimeSeriesCollection dataset = new TimeSeriesCollection(series);
+                JFreeChart chart = ChartFactory.createTimeSeriesChart(
+                        "Stock Prices",
+                        "Date",
+                        "Price",
+                        dataset,
+                        false,
+                        true,
+                        false
+                );
+
+                XYPlot plot = chart.getXYPlot();
+                XYLineAndShapeRenderer renderer = new XYLineAndShapeRenderer(true, false);
+                plot.setRenderer(renderer);
+
+                ChartPanel chartPanel = new ChartPanel(chart);
                 JFrame chartFrame = new JFrame("Stock Price Chart");
                 chartFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
                 chartFrame.setSize(800, 600);
-                chartFrame.add(graphPanel);
+                chartFrame.add(chartPanel);
                 chartFrame.setVisible(true);
             }
         });
@@ -162,127 +185,5 @@ public class Main {
         frame.add(graphButton);
 
         frame.setVisible(true);
-    }
-}
-
-class Bar {
-    LocalDate date;
-    double close;
-
-    Bar(LocalDate date, double close) {
-        this.date = date;
-        this.close = close;
-    }
-
-    public LocalDate getDate() {
-        return date;
-    }
-
-    public double getClose() {
-        return close;
-    }
-}
-
-class GraphPanel extends JPanel {
-    private List<Bar> bars;
-
-    GraphPanel(List<Bar> bars) {
-        this.bars = bars;
-    }
-
-    @Override
-    protected void paintComponent(Graphics g) {
-        super.paintComponent(g);
-        if (bars == null || bars.size() == 0) {
-            return;
-        }
-
-        Graphics2D g2 = (Graphics2D) g;
-        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-
-        int width = getWidth();
-        int height = getHeight();
-        int padding = 25;
-        int labelPadding = 25;
-        int pointWidth = 4;
-        int numberYDivisions = 10;
-
-        double minPrice = Double.MAX_VALUE;
-        double maxPrice = Double.MIN_VALUE;
-        for (Bar bar : bars) {
-            if (bar.getClose() < minPrice) {
-                minPrice = bar.getClose();
-            }
-            if (bar.getClose() > maxPrice) {
-                maxPrice = bar.getClose();
-            }
-        }
-
-        double xScale = ((double) width - 2 * padding - labelPadding) / (bars.size() - 1);
-        double yScale = ((double) height - 2 * padding - labelPadding) / (maxPrice - minPrice);
-
-        List<Point> graphPoints = new ArrayList<>();
-        for (int i = 0; i < bars.size(); i++) {
-            int x = (int) (i * xScale + padding + labelPadding);
-            int y = (int) ((maxPrice - bars.get(i).getClose()) * yScale + padding);
-            graphPoints.add(new Point(x, y));
-        }
-
-        g2.setColor(Color.WHITE);
-        g2.fillRect(padding + labelPadding, padding, width - 2 * padding - labelPadding, height - 2 * padding - labelPadding);
-        g2.setColor(Color.BLACK);
-
-        for (int i = 0; i < numberYDivisions + 1; i++) {
-            int x0 = padding + labelPadding;
-            int x1 = pointWidth + padding + labelPadding;
-            int y0 = height - ((i * (height - padding * 2 - labelPadding)) / numberYDivisions + padding + labelPadding);
-            int y1 = y0;
-            if (bars.size() > 0) {
-                g2.setColor(Color.BLACK);
-                String yLabel = String.format("%.2f", minPrice + (maxPrice - minPrice) * ((i * 1.0) / numberYDivisions));
-                FontMetrics metrics = g2.getFontMetrics();
-                int labelWidth = metrics.stringWidth(yLabel);
-                g2.drawString(yLabel, x0 - labelWidth - 5, y0 + (metrics.getHeight() / 2) - 3);
-            }
-            g2.drawLine(padding + labelPadding, y0, width - padding, y1);
-        }
-
-        for (int i = 0; i < bars.size(); i++) {
-            if (bars.size() > 1) {
-                int x0 = i * (width - padding * 2 - labelPadding) / (bars.size() - 1) + padding + labelPadding;
-                int x1 = x0;
-                int y0 = height - padding - labelPadding;
-                int y1 = y0 - pointWidth;
-                if ((i % ((int) ((bars.size() / 20.0)) + 1)) == 0) {
-                    g2.setColor(Color.BLACK);
-                    String xLabel = bars.get(i).getDate().toString();
-                    FontMetrics metrics = g2.getFontMetrics();
-                    int labelWidth = metrics.stringWidth(xLabel);
-                    g2.drawString(xLabel, x0 - labelWidth / 2, y0 + metrics.getHeight() + 3);
-                }
-                g2.drawLine(x0, height - padding - labelPadding, x1, padding);
-            }
-        }
-
-        g2.drawLine(padding + labelPadding, height - padding - labelPadding, padding + labelPadding, padding);
-        g2.drawLine(padding + labelPadding, height - padding - labelPadding, width - padding, height - padding - labelPadding);
-
-        g2.setColor(Color.BLUE);
-        for (int i = 0; i < graphPoints.size() - 1; i++) {
-            int x1 = graphPoints.get(i).x;
-            int y1 = graphPoints.get(i).y;
-            int x2 = graphPoints.get(i + 1).x;
-            int y2 = graphPoints.get(i + 1).y;
-            g2.drawLine(x1, y1, x2, y2);
-        }
-
-        g2.setColor(Color.RED);
-        for (Point point : graphPoints) {
-            int x = point.x - pointWidth / 2;
-            int y = point.y - pointWidth / 2;
-            int ovalW = pointWidth;
-            int ovalH = pointWidth;
-            g2.fillOval(x, y, ovalW, ovalH);
-        }
     }
 }
