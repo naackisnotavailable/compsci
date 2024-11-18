@@ -2,6 +2,10 @@ package Homework_ArrayLists_1_19_24;
 
 import java.util.ArrayList;
 
+/**
+ * The MainTest class is responsible for testing the methods in the Main class.
+ * It contains test methods for each method in the Main class.
+ */
 public class MainTest {
     public static void main(String[] args) {
         testSumNegativeValues();

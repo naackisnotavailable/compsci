@@ -3,6 +3,13 @@ package Searching_Algorithms;
 import java.util.ArrayList;
 
 public class Binary {
+    /**
+     * Performs binary search on the given ArrayList to find the index of the target element.
+     *
+     * @param arr    the ArrayList to be searched
+     * @param target the target element to be found
+     * @return the index of the target element if found, -1 otherwise
+     */
     public static int binarySearch(ArrayList<Integer> arr, int target) {
         int start = 0;
         int end = arr.size() - 1;

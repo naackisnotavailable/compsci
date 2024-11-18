@@ -8,6 +8,11 @@ public class Main {
         printArray(array);
 
     }
+    /**
+     * Generates a 2D array filled with alternating 1s and 0s.
+     *
+     * @return The generated 2D array.
+     */
     public static int[][] alternating10() {
         int[][] array = new int[100][100];
         
@@ -20,6 +25,11 @@ public class Main {
     return array;
     }
 
+    /**
+     * Generates a multiplication table as a 2D array.
+     *
+     * @return The multiplication table as a 2D array.
+     */
     public static int[][] multiplicationTable() {
         int[][] array = new int[20][20];
         
@@ -32,6 +42,12 @@ public class Main {
     return array;
     }
 
+    /**
+     * Generates a square matrix with dimensions 30x30.
+     * The upper triangular part of the matrix contains 1s, while the lower triangular part contains 0s.
+     *
+     * @return the generated square matrix
+     */
     public static int[][] squareMatrix() {
         int[][] matrix = new int[30][30];
         
@@ -48,6 +64,11 @@ public class Main {
     return matrix;
     }
 
+    /**
+     * Generates a 15x3 array of random double values between 4 and 16.
+     *
+     * @return the generated array
+     */
     public static double[][] rand15x3() {
         Random rand = new Random();
         double[][] array = new double[15][3];
@@ -59,6 +80,12 @@ public class Main {
         }
     return array;
     }
+    /**
+     * Calculates the sum of each row in a 2D array and returns an array containing the row sums.
+     *
+     * @param array the 2D array to calculate row sums for
+     * @return an array containing the sum of each row in the input array
+     */
     public static int[] rowSum(int[][] array) {
     int[] rowSums = new int[array.length];
     
@@ -72,6 +99,12 @@ public class Main {
     
     return rowSums;  
     }
+    /**
+     * Calculates the sum of each column in a 2D array.
+     *
+     * @param array the 2D array to calculate column sums for
+     * @return an array containing the sum of each column in the input array
+     */
     public static int[] colSum(int[][] array) {
     int[] colSums = new int[array[0].length];
     
@@ -86,6 +119,12 @@ public class Main {
     return colSums;
     }
 
+    /**
+     * Transposes a 2D array.
+     *
+     * @param array the 2D array to be transposed
+     * @return the transposed 2D array
+     */
     public static int[][] transpose(int[][] array) {
     int rows = array.length;
     int cols = array[0].length;
@@ -100,6 +139,13 @@ public class Main {
     return transposedArray;
     }
 
+    /**
+     * Checks if the given 2D array contains the specified element.
+     *
+     * @param array   the 2D array to be searched
+     * @param element the element to be checked for existence
+     * @return true if the element is found in the array, false otherwise
+     */
     public static boolean containsElement(int[][] array, int element) {
     for (int[] row : array) {
         for (int num : row) {
@@ -110,6 +156,11 @@ public class Main {
     }
     return false;
     }
+    /**
+     * Prints the elements of a 2D array.
+     *
+     * @param array The 2D array to be printed.
+     */
     public static void printArray(int[][] array) {
         for (int i = 0; i < array.length; i++) {
             for (int j = 0; j < array[i].length; j++) {

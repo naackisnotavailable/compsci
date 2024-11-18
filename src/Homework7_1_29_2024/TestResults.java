@@ -9,6 +9,12 @@ public class TestResults {
         this.sheets = sheets;
     }
 
+    /**
+     * Returns the name of the student with the highest score.
+     * 
+     * @param key the ArrayList of correct answers
+     * @return the name of the student with the highest score
+     */
     public String highestScoringStudent(ArrayList<String> key) {
         double maxCorrect = 0;
         String name = "";

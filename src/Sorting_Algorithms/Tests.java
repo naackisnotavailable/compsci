@@ -3,6 +3,9 @@ package Sorting_Algorithms;
 import java.util.ArrayList;
 import java.util.Random;
 
+/**
+ * The Tests class is used to test the insertion sort algorithm.
+ */
 public class Tests {
     public static void main(String[] args){
     	Random rand = new Random();

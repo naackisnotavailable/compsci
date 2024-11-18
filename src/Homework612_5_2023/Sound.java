@@ -7,6 +7,14 @@ public class Sound { //5
     public Sound(int[] samples){
         this.samples = samples;
     }
+    /**
+     * Limits the amplitude of each sample in the sound array to the specified limit.
+     * Any sample that exceeds the limit is set to the limit value.
+     * The method returns the count of samples that were modified.
+     *
+     * @param limit the maximum amplitude value allowed
+     * @return the count of samples that were modified
+     */
     public int limitAmplitude(int limit){
         int count = 0;
         for(int i=0; i<samples.length; i++){
@@ -21,6 +29,9 @@ public class Sound { //5
         }
         return count;
     }
+    /**
+     * Trims the silence from the beginning of the sound by removing all leading zero samples.
+     */
     public void trimSilenceFromBeginning(){
         ArrayList<Integer> list = new ArrayList<>();
 

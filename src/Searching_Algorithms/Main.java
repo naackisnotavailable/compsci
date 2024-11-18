@@ -41,6 +41,13 @@ public class Main {
         
     }
 
+    /**
+     * Measures the execution time of a given function on a list of integers.
+     *
+     * @param function the function to be executed on the list
+     * @param list     the list of integers on which the function will be executed
+     * @return the execution time in seconds
+     */
     public static double timer(Function<ArrayList<Integer>, ?> function, ArrayList<Integer> list) {
         long start = System.nanoTime();
         function.apply(list);

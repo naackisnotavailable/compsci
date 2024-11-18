@@ -16,6 +16,11 @@ public class WordPairList {
         }
     }
 
+    /**
+     * Returns the number of word pairs in the list that have the same word1 and word2.
+     *
+     * @return the number of matching word pairs
+     */
     public int numMatches() {
         int count = 0;
         for (WordPair pair : wordPairs) {
@@ -26,6 +31,12 @@ public class WordPairList {
         return count;
     }
 
+    /**
+     * Returns a string representation of the word pairs in the WordPairList.
+     * The word pairs are formatted as "word1-word2" and separated by a space.
+     *
+     * @return a string representation of the word pairs
+     */
     public String getWordPairs(){
         String result = "";
         for (WordPair pair : wordPairs) {

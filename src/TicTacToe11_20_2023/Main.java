@@ -4,6 +4,13 @@ import java.util.Objects;
 import java.util.Scanner;
 
 public class Main {
+    /**
+     * The main method is the entry point of the program.
+     * It allows the user to play a game of Tic-Tac-Toe.
+     * The game continues until there is a winner or a tie, and the user can choose to play again.
+     *
+     * @param args The command-line arguments passed to the program.
+     */
     public static void main(String[] args){
         Scanner scanner = new Scanner(System.in);
 
@@ -80,6 +87,11 @@ public class Main {
             }
         }
     }
+    /**
+     * Prints the Tic-Tac-Toe board.
+     * 
+     * @param board the array representing the Tic-Tac-Toe board
+     */
     public static void printBoard(String[] board){
         System.out.print(board[0]);
         System.out.print(board[1]);
@@ -94,6 +106,12 @@ public class Main {
 
     }
 
+    /**
+     * Checks the winning condition on the Tic-Tac-Toe board.
+     * 
+     * @param board The Tic-Tac-Toe board represented as an array of strings.
+     * @return The winning symbol ('o' or 'x') if there is a winner, or null if there is no winner yet.
+     */
     public static String checkWin(String[] board){
         if(Objects.equals(board[0], "o")&&Objects.equals(board[1], "o")&&Objects.equals(board[2], "o")) {
             return "o";

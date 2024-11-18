@@ -2,6 +2,14 @@ package Ciphers;
 
 
 public class Viginere {
+    /**
+     * Applies the Vigenere cipher to the given original string using the provided keyword.
+     * 
+     * @param original the original string to be encrypted or decrypted
+     * @param keyword the keyword used for encryption or decryption
+     * @param encrypt true if the original string should be encrypted, false if it should be decrypted
+     * @return the resulting string after applying the Vigenere cipher
+     */
     public static String vigenereCipher(String original, String keyword, boolean encrypt){
         keyword = Utility.removeNonAlpha(keyword);
         keyword = Utility.toUpper(keyword);

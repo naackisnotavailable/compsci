@@ -4,6 +4,9 @@ public class ClimbInfo {
     private String peakName;
     private int climbingTime;
 
+    /**
+     * Represents information about a climbing event.
+     */
     public ClimbInfo(String peakName, int climbingTime) {
         this.peakName = peakName;
         this.climbingTime = climbingTime;
